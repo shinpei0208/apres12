@@ -79,11 +79,16 @@ We consider real-time applications where each task runs in a periodic or
 sporadic manner under deadline constraints.
 Such a task set and application includes motion planning and 
 vision-based perception in state-of-the-art autonomous driving
-vehicles.
-We also presume the computing demand of each task to be highly
+vehicles, where the periods often correspond to frame-rates, and the
+deadlines appear at the end of period.
+It should however be noted that deadline constraints may not be relevant
+to periods depending on applications, but the computation must meet the
+deadline in order to achieve the desired quality of service in either case.
+We also presume that the computing demand of each task is highly
 variable.
-For example, planning and perception workloads are governed by the
-number of objects, the size of data, and the desired quality of output.
+For example, the performance of planning and perception is usually
+governed by the number of objects, the size of data, and the desired
+quality of output.
 These workloads are also well parallelizable using the GPU.
 Hence, the autonomous driving tasks and applications are our primary
 target, but the contribution of this paper is not limited to those but
