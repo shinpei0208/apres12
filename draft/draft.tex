@@ -51,10 +51,44 @@ University of California, Santa Cruz
 \section{System Model}
 \label{sec:system_model}
 
-sporadic/periodic tasks etc.
-NVIDIA Fermi GPUs.
-NVIDIA Kepler GPUs may allow multiple contexts to execute on the GPU
+We assume such embedded systems that equip GPUs as compute devices.
+The application task starts execution on the CPU, and offloads its
+data-parallel compute-intensive workload onto the GPU when needed.
+Once offloaded onto the GPU, the task becomes non-preemptive due to many
+reasons.
+In fact, it is technically possible to preempt the running task on the
+GPU by loading and restoring its context, but it requires additional
+firmware, runtime, and OS support, and the preemption cost would be
+non-trivial due to a very large set of GPU registers and states.
+We hence restrict our attention to a non-preemptive execution model for
+GPU computing.
+GPUs may also pose some constraints in multi-tasking.
+Even the NVIDIA Fermi architecture~\cite{Fermi}, one of the most popular
+GPU product lines, allows only one context to use GPU resources at
+once, though this context may spawn multiple GPU kernels (jobs)
 simultaneously.
+In other words, if task-level parallelism is required, the entire system
+must run in the same context.
+We however believe that this constraint will not limit the concept of
+this paper.
+We can use the same context to exploit concurrent parallel job
+executions, and it should be enough to demonstrate a proof of concept. 
+We also expect that future product lines will remove this concern.
+
+We consider real-time applications where each task runs in a periodic or
+sporadic manner under deadline constraints.
+Such a task set and application includes motion planning and 
+vision-based perception in state-of-the-art autonomous driving
+vehicles.
+We also presume the computing demand of each task to be highly
+variable.
+For example, planning and perception workloads are governed by the
+number of objects, the size of data, and the desired quality of output.
+These workloads are also well parallelizable using the GPU.
+Hence, the autonomous driving tasks and applications are our primary
+target, but the contribution of this paper is not limited to those but
+is also generally applicable to highly vaiable workloads running on the
+GPU.
 
 \section{Adaptive GPU Resource Management}
 \label{sec:adaptivity_support}
