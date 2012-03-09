@@ -127,18 +127,29 @@ applications to adjust their task execution times upon workload.
 We believe that the number of cores used in the program is a major
 factor that could change the execution time, and hence explore how to
 adjust it at runtime.
-It is important to note that programmers are typically responsible for
+It is important to note that programmer is typically responsible for
 allocating the number of cores (or threads mapped to cores) in GPU
 programming.
 In order to adjust the number of cores at runtime, it is essential to
-provide the programmers with an interface to obtain the information on
-the number of cores available or allocated for the program.
+provide the programmer with an interface to obtain the information on
+the number of cores available or allocated for the program at runtime.
+The programmer is then responsible for making the program adaptive to
+the number of cores.
+
 In the following, we present two frameworks that could achieve our idea.
 Although they are still at an idea stage, we plan to implement a real
-system and demonstrate its capability, leveraging open-source
+system as a proof-of-concept, leveraging open-source
 software~\cite{Kato_OSPERT11}.
 
 \subsection{Explicit Adjustment}
+
+We propose an explicit adjustment framework where the programmer is
+responsible for adjusting the number of cores to relax or tighten
+the computing demand.
+There will be no adjustment unless the programmer explicitly takes an
+action.
+A typical usage of this framework with periodic real-time tasks is as
+follows:
 
 At the end of each period, the programmer calls a API function provided
 by our framework that returns the latest task execution time.
@@ -151,16 +162,43 @@ desired task execution time to meet the frame-rate or deadline.
 It is also flexible in that the programmer can determine when to
 increase or decrease the number of cores.
 
+A downside of this framework is that some task may misbehave
+and interfer with other contending application tasks, if the programmer
+fails to call the API functions correctly.
+We can cap the maximum number of cores available for an individual task
+to prevent it from abusing GPU resources, but adaptivity of computing
+depends on programmers, and the system cannot really control it.
+
 \subsection{Implicit Adjustment}
+
+Our second approach to adaptive resource management is an implicit
+adjustment framework.
+In this framework, the number of cores to be allocated for the program
+is set by the runtime system.
+Hence, adaptivity of computing does not really depend on programmers,
+but if the program is not aware of this framework, it may fail to run,
+since the number of core allocated for the program may be different from
+what the program assumes.
 
 The programmer specifies the desired task execution time as a set point
 before the task starts.
+If this set point is not specified, the runtime system tries to derive
+it internally as time goes by.
 When the task uses the GPU, the runtime system consistently updates the
 number of cores available for the corresponding task in the next period
 based on the previous execution time records.
 It is a programmer's duty to check the number of available cores before
 offloading the computation onto the GPU.
 
+This implicit adjustment framework is more encouraged than the explicit
+adjustment framework, as it can enforce adaptive GPU resource
+management.
+However, it requires consensus in the programming model that the number
+of cores allocated for the program could be changed every time it is
+offloaded onto the GPU, and the programmer must be aware of it to make
+the program work.
+We claim that this is a natural trade-off between generality of
+programming and adaptivity of service.
 
 \section{Summary}
 \label{sec:summary}
