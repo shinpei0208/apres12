@@ -1,0 +1,136 @@
+\documentclass[times, 10pt, twocolumn]{article}
+\usepackage{latex8}
+\usepackage[dvips]{graphicx}
+\usepackage[fleqn]{amsmath}
+\usepackage{amsthm}
+\usepackage{txfonts}
+\usepackage{courier}
+\usepackage{subfigure}
+\usepackage{comment}
+\usepackage{url}
+\usepackage[square,numbers]{natbib}
+
+%-----------------------------------------
+% need for camera-ready
+\pagestyle{empty}
+
+%----------------------------------------
+
+\begin{document}
+
+\title{
+Toward Adaptive GPU Resource Management for Embedded Real-Time Systems
+}
+
+\author {
+Junsung Kim and Ragunathan (Raj) Rajkumar\\
+\\
+Department of Electrical and Computer Engineering\\
+Carnegie Mellon University
+\and
+Shinpei Kato and Scott Brandt\\
+\\
+Department of Computer Science\\
+University of California, Santa Cruz
+}
+
+\maketitle
+
+%-----------------------------------------
+% need for camera-ready
+\thispagestyle{empty}
+
+\begin{abstract}
+ In this paper, we present conceptual frameworks for GPU applications to
+ adjust their task execution times upon given workloads.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+
+\section{System Model}
+\label{sec:system_model}
+
+sporadic/periodic tasks etc.
+NVIDIA Fermi GPUs.
+NVIDIA Kepler GPUs may allow multiple contexts to execute on the GPU
+simultaneously.
+
+\section{Adaptive GPU Resource Management}
+\label{sec:adaptivity_support}
+
+In this section, we provide an idea of adaptivity support for GPU
+applications.
+We particularly focus on computing resource allocation problems.
+It is true that some embedded real-time systems exhibit highly variable
+workloads.
+Since GPUs integrate a great number of compute cores on a chip, we can
+support even highly variable workloads in a timely manner by adjusting
+allocated cores at runtime.
+
+There are several levels of approaches for adaptive GPU resource
+management.
+Previous work~\cite{Kato_RTAS11, Kato_RTSS11, Kato_ATC11} took
+time-driven approaches that control timings and the amounts of time
+allowed to access GPU resources, \textit{i.e.}, scheduling and
+reservation.
+In these time-driven approaches, application tasks need not to be aware
+of what is happening in GPU resource management, because it is handled
+by the OS or runtime scheduler.
+However, they can never manage task execution times.
+They also limit the number of contexts that can access the GPU
+simultaneously to remove performance interference.
+Therefore, GPU resources could be wasted if a running context does not
+fully use compute cores.
+
+We consider a different approach than previous work that enables GPU
+applications to adjust their task execution times upon workload.
+We believe that the number of cores used in the program is a major
+factor that could change the execution time, and hence explore how to
+adjust it at runtime.
+It is important to note that programmers are typically responsible for
+allocating the number of cores (or threads mapped to cores) in GPU
+programming.
+In order to adjust the number of cores at runtime, it is essential to
+provide the programmers with an interface to obtain the information on
+the number of cores available or allocated for the program.
+In the following, we present two frameworks that could achieve our idea.
+Although they are still at an idea stage, we plan to implement a real
+system and demonstrate its capability, leveraging open-source
+software~\cite{Kato_OSPERT11}.
+
+\subsection{Explicit Adjustment}
+
+At the end of each period, the programmer calls a API function provided
+by our framework that returns the latest task execution time.
+The programmer next calls either of the following two API functions.
+One increases the number of cores to be used in the next period or GPU
+invocation to speed up the program.
+The other decreases it to speed down the program.
+This framework would work fine because the programmer often knows the
+desired task execution time to meet the frame-rate or deadline.
+It is also flexible in that the programmer can determine when to
+increase or decrease the number of cores.
+
+\subsection{Implicit Adjustment}
+
+The programmer specifies the desired task execution time as a set point
+before the task starts.
+When the task uses the GPU, the runtime system consistently updates the
+number of cores available for the corresponding task in the next period
+based on the previous execution time records.
+It is a programmer's duty to check the number of available cores before
+offloading the computation onto the GPU.
+
+
+\section{Summary}
+\label{sec:summary}
+
+%\setlength{\bibsep}{2.5pt}
+%\renewcommand{\baselinestretch}{0.94}
+\bibliographystyle{plain}
+{\footnotesize
+\bibliography{references}
+}
+
+\end{document}
