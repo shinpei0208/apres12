@@ -42,7 +42,19 @@ University of California, Santa Cruz
 
 \begin{abstract}
  In this paper, we present conceptual frameworks for GPU applications to
- adjust their task execution times upon given workloads.
+ adjust their task execution times upon given workloads. We propose two 
+ frameworks enabling smart GPU resource management when many applications 
+ share GPU resources while the workloads of those applications vary. 
+ For {\it explicit adjustment}, we provide API functions so that application 
+ developers can adjust the number of GPU cores depending on their needs. 
+ An {\it implicit adjustment} will provide a run-time framwork which 
+ dynamically allocates the number of cores to tasks based on the given 
+ workloads. The runtime support of the proposed system can be realized using 
+ functions which measure the execution times of the tasks on GPU and change 
+ the number of GPU cores. We motivate the necessity of this framework 
+ in the context of self-driving technologies, and we believe that our 
+ frameworks for GPU programming are useful contributions given that 
+ trends are apparently shifting to highly parallel heterogeneous computing.
 \end{abstract}
 
 \section{Introduction}
@@ -106,7 +118,21 @@ system~\cite{Ferreira11}, and their GPU implementation yielded
 
 As described above, there has been research on applying GPU to different applications on self-driving cars, and it is clear that GPU can provide great benefits on realizing self-driving car technologies. However, not much research has been done when those technologies are deployed together on self-driving cars, where the loads of each application dynamically vary depending on environments. The period and the computation time of the planning algorithms for autonomous driving highly depend on the vehicle speed, so the planning algorithms can be heavily loaded when the car is on highway. The load of the perception algorithms mainly depend on the number of obstacles around the car hence the perception system requires more computing resources when the car is driving in the urban area. Therefore, an intelligent method of sharing many cores on GPU would be essential when we use GPU on self-driving cars. For example, if a self-driving car has a 96-core GPU, the planning algorithm of the car can use 72 cores on the highway and use 12 cores in the urban environment. A self-driving car~\cite{Urmson08} require tens of tasks, and the dynamic core management should be fulfilled across all tasks if those tasks utilize GPU. 
 
-In this paper, we propose conceptual frameworks for GPU applications to adjust their task execution times depending on their given workloads.
+In this paper, we present conceptual frameworks for
+GPU applications to adjust their task execution times upon
+given workloads. We propose two frameworks enabling
+smart GPU resource management when many applications
+share GPU resources while the workloads of those appli-
+cations vary. For explicit adjustment, we provide API func-
+tions so that application developers can adjust the number
+of GPU cores depending on their needs. An implicit adjust-
+ment will provide a run-time framwork which dynamically
+allocates the number of cores to tasks based on the given
+workloads. The runtime support of the proposed system
+can be realized using functions which measure the execu-
+tion times of the tasks on GPU and change the number of
+cores.
+
 
 The rest of paper is organized as follows. Section~\ref{sec:system_model} describes how our proposed system is modeled. Section~\ref{sec:adaptivity_support} presents the methods for adaptively managing the given GPU resources, and we conclude our paper in Section~\ref{sec:summary}.
 
