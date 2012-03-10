@@ -175,10 +175,10 @@ Our second approach to adaptive resource management is an implicit
 adjustment framework.
 In this framework, the number of cores to be allocated for the program
 is set by the runtime system.
-Hence, adaptivity of computing does not really depend on programmers,
-but if the program is not aware of this framework, it may fail to run,
-since the number of core allocated for the program may be different from
-what the program assumes.
+Hence, adaptivity of computing does not really depend on programmers.
+If the program is not aware of this framework, however, it may fail to
+run, since the number of core allocated for the program may be different
+from what the program assumes.
 
 The programmer specifies the desired task execution time as a set point
 before the task starts.
@@ -199,6 +199,59 @@ offloaded onto the GPU, and the programmer must be aware of it to make
 the program work.
 We claim that this is a natural trade-off between generality of
 programming and adaptivity of service.
+
+\subsection{Runtime System Support}
+\label{sec:runtime}
+
+The runtime system provides the API for programmers.
+In order to support adaptive GPU resource management, we must provide
+some additional API functions.
+
+\begin{itemize}
+ \item Our adaptive GPU resource management frameworks require a
+       function to measure the execution time of each job running on the
+       GPU.
+       This function is easy-to-implement.
+       Since we assume that job execution on the GPU is non-preemptive,
+       the amount of time in run-to-completion can be accounted as a job
+       execution time.
+       This accounting method is known to work in previous
+       work~\cite{Kato_ATC11, Rossbach_SOSP11}, and hence we can adopt
+       it.
+       For the explicit adjustment framework, this function must be
+       exposed to the programmer, while it can also be used internally
+       by the implicit adjustment framework.
+ \item We also need several functions to change the number of cores to
+       be allocated for the program.
+       Some existing programming languages for GPGPU, \textit{e.g.},
+       CUDA~\cite{CUDA}, provide the API to allow the programmer to
+       specify the shape of grid structure and the number of threads
+       mapped to compute cores.
+       We can use this API as it is, or provide a corresponding API if
+       the underlying programming language does not support it.
+\end{itemize}
+
+In addition to these API functions, the runtime system must be able to
+detect when the program is offloaded onto the GPU and when it is
+completed on the GPU.
+Since the programmer calls a specific API function to launch the GPU
+program in most GPU programming models, it is very easy to record the
+start time of GPU execution.
+Detection of the completion time of GPU execution, on the other hand, is
+not straightforward.
+We would need to use an interrupt to notify the runtime system of
+completion of GPU execution.
+Polling on a particular register is an alternative approach, but it
+would not be suitable for latency-sensitive real-time systems, as
+previous work demonstrated~\cite{Kato_ATC11}.
+
+Finally, runtime system support must be integrated with the API so that
+the programmer can make use of our frameworks under a single unified
+programming model.
+We plan to extend our CUDA runtime library developed in previous
+work~\cite{Kato_OSPERT11} to support our adaptive frameworks.
+This is our prototype implementation, and our frameworks can also be
+integrated with other programming models beyond CUDA.
 
 \section{Summary}
 \label{sec:summary}
