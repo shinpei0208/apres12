@@ -1,9 +1,36 @@
-\documentclass[times, 10pt, twocolumn]{article}
-\usepackage{latex8}
-\usepackage[dvips]{graphicx}
-\usepackage[fleqn]{amsmath}
-\usepackage{amsthm}
-\usepackage{txfonts}
+% THIS IS SIGPROC-SP.TEX - VERSION 3.1
+% WORKS WITH V3.2SP OF ACM_PROC_ARTICLE-SP.CLS
+% APRIL 2009
+%
+% It is an example file showing how to use the 'acm_proc_article-sp.cls' V3.2SP
+% LaTeX2e document class file for Conference Proceedings submissions.
+% ----------------------------------------------------------------------------------------------------------------
+% This .tex file (and associated .cls V3.2SP) *DOES NOT* produce:
+%       1) The Permission Statement
+%       2) The Conference (location) Info information
+%       3) The Copyright Line with ACM data
+%       4) Page numbering
+% ---------------------------------------------------------------------------------------------------------------
+% It is an example which *does* use the .bib file (from which the .bbl file
+% is produced).
+% REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission,
+% you need to 'insert'  your .bbl file into your source .tex file so as to provide
+% ONE 'self-contained' source file.
+%
+% Questions regarding SIGS should be sent to
+% Adrienne Griscti ---> griscti@acm.org
+%
+% Questions/suggestions regarding the guidelines, .tex and .cls files, etc. to
+% Gerald Murray ---> murray@hq.acm.org
+%
+% For tracking purposes - this is V3.1SP - APRIL 2009
+
+\documentclass{acm_proc_article-sp}
+%\usepackage[dvips]{graphicx}
+%\usepackage[fleqn]{amsmath}
+%\usepackage{amsthm}
+%\usepackage{txfonts}
 \usepackage{courier}
 \usepackage{subfigure}
 \usepackage{comment}
@@ -21,18 +48,71 @@
 \title{
 Towards Adaptive GPU Resource Management for Embedded Real-Time Systems
 }
+%
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
 
-\author {
-Junsung Kim and Ragunathan (Raj) Rajkumar\\
-\\
-Department of Electrical and Computer Engineering\\
-Carnegie Mellon University
+\numberofauthors{2} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+\alignauthor Junsung Kim\\
+       \affaddr{Dept. of Electrical and Computer Engineering}\\
+       \affaddr{Carnegie Mellon University}\\
+       \email{junsungk@cmu.edu}
+\alignauthor Ragunathan (Raj) Rajkumar\\
+       \affaddr{Dept. of Electrical and Computer Engineering}\\
+       \affaddr{Carnegie Mellon University}\\
+       \email{raj@ece.cmu.edu}
 \and
-Shinpei Kato\\
-\\
-Department of Computer Science\\
-University of California, Santa Cruz
+\alignauthor Shinpei Kato\\
+       \affaddr{Dept. of Information Engineering}\\
+       \affaddr{Nagoya University}\\
+       \email{shinpei@is.nagoya-u.ac.jp}
 }
+% There's nothing stopping you putting the seventh, eighth, etc.
+% author on the opening page (as the 'third row') but we ask,
+% for aesthetic reasons that you place these 'additional authors'
+% in the \additional authors block, viz.
+%\additionalauthors{Additional authors: John Smith (The Th{\o}rv{\"a}ld Group,
+%email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
+%(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
+%\date{30 July 1999}
+% Just remember to make sure that the TOTAL number of authors
+% is the number that will appear on the first page PLUS the
+% number that will appear in the \additionalauthors section.
 
 \maketitle
 
@@ -47,7 +127,7 @@ University of California, Santa Cruz
  share GPU resources while the workloads of those applications vary. 
  Application 
  developers can explicitly adjust the number of GPU cores depending on their needs. 
- An implicit adjustment will be supported by a run-time framwork, which 
+ An implicit adjustment will be supported by a run-time framework, which 
  dynamically allocates the number of cores to tasks based on the total 
  workload. The runtime support of the proposed system can be realized using 
  functions which measure the execution times of the tasks on GPU and change 
@@ -92,7 +172,7 @@ future product lines of BMW vehicles~\cite{NVIDIA_BMW}.
 %Urmson08} are motivated by various benefits of automated functions,
 %but, most importantly, enabling 
 Automatic safety features require smart planning and intelligent
-processing of data obtained from many sensors equiped in the vehicle,
+processing of data obtained from many sensors equipped in the vehicle,
 including LIDAR (LIght Detection And Ranging), radar, camera, and
 ultrasonic sensors. 
 One common characteristic in these types of processing is that GPUs can
@@ -130,13 +210,16 @@ These frameworks support both explicit and implicit adjustment.
 With support for explicit adjustment, %we provide API functions so that 
 application developers can adjust the number
 of GPU cores depending on their needs. %An implicit adjustment will provide 
-A run-time framwork will dynamically
+A run-time framework will dynamically
 allocate the number of cores to tasks based on current 
 workloads. The runtime support of our proposed system
 can be realized using functions which measure the execution 
 times of the tasks on GPU and change the number of cores.
 
-The rest of paper is organized as follows. Section~\ref{sec:system_model} describes how our proposed system is modeled. Section~\ref{sec:adaptivity_support} presents the methods for adaptively managing GPU resources, and we conclude our paper in Section~\ref{sec:summary}.
+The rest of paper is organized as
+follows. Section~\ref{sec:system_model} describes how our proposed
+system is modeled. Section~\ref{sec:adaptivity_support} presents the
+methods for managing GPU resources in an adaptive manner, and we conclude our paper in Section~\ref{sec:summary}.
 
 \section{System Model}
 \label{sec:system_model}
@@ -189,8 +272,7 @@ GPU.
 \section{Adaptive GPU Resource Management}
 \label{sec:adaptivity_support}
 
-In this section, we describe adaptivity support for GPU
-applications.
+In this section, we describe adaptive support for GPU applications.
 We particularly focus on solving resource allocation problems.
 The goal is to support embedded real-time systems that exhibit highly variable
 workloads.
@@ -267,7 +349,7 @@ A downside of this framework is that a task may misbehave
 and interfere with other contending application tasks, if the programmer
 fails to call the API functions correctly.
 We can cap the maximum number of cores available for an individual task
-to prevent it from abusing GPU resources, but the adaptivity of computing
+to prevent it from abusing GPU resources, but the adaptive nature of computing
 depends on the programmer, and outside system control.
 
 \subsection{Implicit Adjustment}
@@ -366,6 +448,12 @@ optimizing performance under resource-constrained environments.
 We believe that our frameworks for GPU programming are useful
 contributions in this line of work, given the increasing emphasis in 
 highly parallel heterogeneous computing.
+
+In future work, we plan to integrate our frameworks into our prototype
+fault-tolerant adaptive systems~\cite{Kim_RTSS12} for autonomous driving
+technology.
+This is highly a challenging project to coordinate high-performance and
+adaptive computing for embedded real-time applications.
 
 \bibliographystyle{plain}
 {\footnotesize
